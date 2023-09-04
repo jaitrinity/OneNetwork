@@ -1,0 +1,26 @@
+<ngx-spinner
+bdOpacity = 0.9 bdColor = "#333" size = "medium" color = "#fff" type = "ball-scale-multiple"></ngx-spinner>
+
+<!-- <div class="container-fluid page-header" style="padding: 10px"> -->
+<div class="container-fluid" [ngStyle]="{'background-color':color2}" style="padding: 10px">
+  <!-- <div class="row" >
+    <div class="col-md-4">
+      <a href="javascript:void()" style="font-size: 20px;margin: 5px 0px;color:white;cursor: default;border-bottom: 1px solid #ffbd07">
+        <span>Device</span> 
+      </a>
+    </div>
+  </div> -->
+  <div class="row">
+    <div class="col-md-12">
+      <!-- <label style="color: transparent;display: block">filter</label> -->
+      <!-- <button class="btn hsil-red text-white text-bold tom-border-radius" (click)="searchDeviceData()">Search</button> -->
+      <button class="btn text-white text-bold tom-border-radius" [ngStyle]="{'background-color':button}" (click)="searchDeviceData()">Search</button>
+    </div>
+  </div>
+</div> 
+
+<div class="row" style="margin-bottom: 10px;overflow: auto;">
+  <div class="col-md-12">
+    <ng2-smart-table [settings]="deviceTableSettings" [source]="deviceList" (edit)="actionOnDevice($event,1)" (delete)="actionOnDevice($event,0)"></ng2-smart-table>
+  </div>
+</div>

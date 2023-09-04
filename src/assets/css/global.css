@@ -1,0 +1,67 @@
+.info{
+    cursor: pointer;
+}
+.multiselect-dropdown{
+    background-color: white;
+    border-radius : 10px;
+}
+
+.multiselect-dropdown .selected-item{
+    color: black !important;
+    background: transparent !important;
+    border: transparent !important;
+}
+
+.multiselect-dropdown .selected-item :hover{
+    border: none !important;
+}
+nav.side-navbar{
+    /* background: #70318b */
+    max-height: 584px;
+    overflow: auto;
+}
+div.content-inner{
+    max-height: 584px;
+    overflow-x: hidden;
+}
+.hsil-red{
+    background-color: #70318b !important;
+}
+.tom-border-radius{
+    border-radius: 10px !important;
+}
+  
+.tom-text-color {
+    color : white !important;
+}
+.text-bold{
+    font-weight: bold !important;
+}
+ng2-smart-table thead {
+    color:white;
+    /* background: #70318b !important; */
+    /* background: #5396d0 !important; */
+}
+ng2-smart-table .ng2-smart-action-delete-delete,
+ng2-smart-table .ng2-smart-action-edit-edit,
+ng2-smart-table .ng2-smart-action-custom-custom {
+    padding:3px;
+    color:black !important;
+    font-weight: bold;
+    border: 1px solid #70318b;
+    border-radius: 3px;
+    font-size:12px;
+    margin-right: 5px
+}
+
+ng2-smart-table .ng2-smart-action-delete-delete:hover,
+ng2-smart-table .ng2-smart-action-edit-edit:hover,
+ng2-smart-table .ng2-smart-action-custom-custom:hover{
+    text-decoration: none !important;
+    background: #70318b;
+    color:white !important;
+}
+
+div.page-header{
+    background: #5396d0;
+}

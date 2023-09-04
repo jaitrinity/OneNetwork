@@ -1,0 +1,23 @@
+.btn-group{
+    margin-right: 10px;
+}
+.btn-group>button{
+    background: transparent;
+    /* color: #5396d0; */
+    color: #70318b;
+    font-weight: 400;
+}
+.btn-group>button.active{
+    background: transparent;
+    color : #cb1238;
+    font-weight: 400;
+    /* border-bottom: 2px solid black; */
+}
+.dropdown-menu{
+    min-width: 120px !important;
+    padding: 4px 0 !important;
+}
+
+.side-menu > li{
+    padding:10px 0px 0px 10px;
+}

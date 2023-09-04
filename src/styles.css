@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/css/global.css";
+ul.item2{
+    position: relative;
+}
+.multiselect-dropdown .dropdown-btn .selected-item:hover {
+    box-shadow: none !important;
+}
+.multiselect-dropdown .dropdown-btn .selected-item a {
+    display: none;
+}
+ng2-smart-table tbody > tr > td{
+    word-break: break-word;
+}
+img.icon{
+    width: 50px;
+    height: 50px
+}
+img[src=null]{
+    display: none;
+}
+
+/* html, body { height: 100%; } */
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+mat-slider {
+    width: 87%;
+}
+
+table tbody{
+    font-weight: bold;
+}

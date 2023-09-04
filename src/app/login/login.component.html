@@ -1,0 +1,95 @@
+
+<ngx-spinner
+bdOpacity = 0.9
+      bdColor = "#333"
+      size = "medium"
+      color = "#fff"
+      type = "ball-scale-multiple">
+    </ngx-spinner>
+
+ <div class="login-box">
+    <!-- <div class="login-box-body" > -->
+    <div class="login-box-body" [ngStyle]="{'background-color':loginPage}">
+      <div class="login-logo" style="margin-bottom: 15px;">
+          <a href="javascript:void(0)">
+            <img src="assets/img/login_logo.png" alt="My Ad Cubes" style="height: 140px;">
+            <!-- <img [src]= "loginLogUrl" alt="My Ad Cubes" style="height: 108px;"> -->
+            <!-- <img src= "" alt="My Ad Cubes" style="height: 108px;"> -->
+          </a>
+      </div>
+      <div>
+          <h3 class="text-center tom-text-color">One Network</h3>
+      </div>
+      <form class="form-signin" (ngSubmit) = "checkAuthenticate()" #authenticateForm="ngForm" novalidate>
+        <!-- <label style="margin-bottom: 0px" class="tom-text-color">Company</label>
+        <input type="text" [(ngModel)] = "loginModel.company" name="company" class="form-control" placeholder="Company" style="margin-bottom: 10px;" required autofocus/> -->
+        <label style="margin-bottom: 0px" class="tom-text-color">Mobile No</label>
+        <input type="text" [(ngModel)] = "loginModel.username" name="Mobile No" class="form-control" placeholder="Mobile No" style="margin-bottom: 10px;" required/>
+        <label style="margin-bottom: 0px;" class="tom-text-color">Password</label>
+        <input type="password" [(ngModel)] = "loginModel.password" name="password" class="form-control"  placeholder="Password" required/>
+        <label (click)="openForgetPasswordModel()" class="tom-text-color" style="float:right;cursor: pointer;text-decoration: underline;margin-bottom: 15px">
+          Forget Password ?
+        </label>
+        <!-- <button class="btn btn-lg  btn-sm btn-block hsil-red" [disabled]="!authenticateForm.valid" type="submit" style="color: white;">Login</button> -->
+        <!-- <button class="btn btn-lg  btn-sm btn-block hsil-red text-bold"  type="submit" style="color: white;">Login</button> -->
+        <button class="btn btn-lg btn-sm btn-block text-bold" [disabled]="!authenticateForm.valid" [ngStyle]="{'background-color':button}" type="submit" style="color: white;">Login</button>
+      </form>
+      
+    </div>
+</div>
+
+<div id="forgetPasswordModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header" style="padding: 10px !important;">
+        <h4 class="modal-title" class="tom-text-color">Reset Password</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-7">
+            <label class="tom-text-color">Mobile Number</label>
+            <input type="text" [(ngModel)]="mobileNumber" OnlyNumber="true" LengthValidater="10" class="form-control" placeholder="enter mobile"/>
+          </div>
+          <div class="col-md-5">
+            <label style="color: transparent;display: block">Send OTP</label>
+            <button [ngStyle]="{'background-color':button}" class="btn tom-text-color btn-block text-bold" [disabled] = "mobileNumber == '' || mobileNumber.length<9 " (click)="sendOTP()">Send OTP</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-7">
+            <label class="tom-text-color">OTP</label>
+            <input type="text" [(ngModel)]="otpNumber" OnlyNumber="true" LengthValidater="6" class="form-control" placeholder="enter 6 digit OTP"/>
+          </div>
+          <div class="col-md-5">
+            <label style="color: transparent;display: block">Verify OTP</label>
+            <button [ngStyle]="{'background-color':button}" class="btn tom-text-color btn-block text-bold" [disabled] = "otpNumber == '' || otpNumber.length<6  " (click)="VerifyOTP()">Verify OTP</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-7">
+            <label class="tom-text-color">New Password</label>
+            <input type="password" [(ngModel)]="newPassword" [disabled] = "!isOTP_Validate" class="form-control" placeholder="enter new password"/>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-7">
+            <label class="tom-text-color">Confirm Password</label>
+            <input type="password" [(ngModel)]="confirmPassword" [disabled] = "!isOTP_Validate" class="form-control" placeholder="confirm password"/>
+          </div>
+          <div class="col-md-5">
+            <label style="color: transparent;display: block">Change password</label>
+            <button [ngStyle]="{'background-color':button}" class="btn tom-text-color btn-block text-bold" [disabled] = "confirmPassword == '' " (click)="changePassword()">Change password</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button class="btn btn-sm hsil-red text-white" >Approve</button> -->
+        <!-- <button type="button" class="btn  btn-sm hsil-red text-white" data-dismiss="modal">Close</button> -->
+        <button [ngStyle]="{'background-color':button}" type="button" class="btn  btn-sm text-white text-bold" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

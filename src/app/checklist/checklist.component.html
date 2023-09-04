@@ -1,0 +1,291 @@
+<ngx-spinner
+bdOpacity = 0.9 bdColor = "#333" size = "medium" color = "#fff" type = "ball-scale-multiple"></ngx-spinner>
+
+<!-- <div class="container-fluid page-header" style="padding: 10px"> -->
+<div class="container-fluid" [ngStyle]="{'background-color':color2}" style="padding: 10px">
+  <div class="row">
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Category</label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="category" (input)="validateData(1)">
+    </div>
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Category Icon</label>
+      <input type="file" class="form-control input-sm tom-border-radius" accept=".jpg,.jpeg,.png" [(ngModel)]="categoryIcon" id="categoryIcon" [disabled]="category == '' " 
+      (change)="changeListener($event,1)">
+    </div>
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Subcategory</label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="subcategory" (input)="validateData(2)" [disabled]="category == '' ">
+    </div>
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Subcategory Icon</label>
+      <input type="file" class="form-control input-sm tom-border-radius" accept=".jpg,.jpeg,.png" [(ngModel)]="subcategoryIcon" id="subcategoryIcon" [disabled]="category == '' || subcategory == '' "
+      (change)="changeListener($event,2)">
+    </div>
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Caption</label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="caption" (input)="validateData(3)" [disabled]="category == '' || subcategory == '' ">
+    </div>
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Caption Icon</label>
+      <input type="file" class="form-control input-sm tom-border-radius" accept=".jpg,.jpeg,.png" [(ngModel)]="captionIcon" id="captionIcon" [disabled]="category == '' || subcategory == '' || caption == '' "
+      (change)="changeListener($event,3)">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label class="text-white text-bold ">No Of Page</label>
+      <ng-multiselect-dropdown [placeholder]="'Select'" [data]="maxNoOfPageList"
+        [(ngModel)]="selectedMaxNoOfPageList" [settings]="singleSelectdropdownSettings"
+        (onSelect)="onSelectNoOfPage($event)" (onDeSelect)="onDeselectNoOfPage($event)">
+      </ng-multiselect-dropdown>
+    </div>
+    <div class="col-md-10" *ngIf="noOfPage.length != 0">
+      <div class="row">
+        <div class="col-md-6" *ngFor="let nop of noOfPage">
+          <label class="text-white text-bold ">Page {{nop}} Checkpoint</label>
+          <input type="hidden" class="form-control input-sm tom-border-radius checkpointBox" id="checkpointBox{{nop}}"/>
+          <ng-multiselect-dropdown [placeholder]="'Select'" [data]="checkpointList"
+            [(ngModel)] = "qtd[nop]" [settings]="multiSelectdropdownSettings"
+            (onSelect)="onSelectCheckpoint($event,nop)" (onDeSelect)="onDeselectCheckpoint($event,nop)"
+            (onSelectAll)="onSelectAllCheckpoint($event,nop)" (onDeSelectAll) = "onDeselectAllCheckpoint($event,nop)">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div class="row" *ngIf="noOfPage.length != 0">
+        <div class="col-md-6" >
+          <label class="text-white text-bold ">Verifier</label>
+          <ng-multiselect-dropdown [placeholder]="'Select'" [data]="verifierList"
+            [(ngModel)]="selectedVerifierList" [settings]="multiSelectdropdownSettings"
+            (onSelect)="onSelectVerifier($event)" (onDeSelect)="onDeselectVerifier($event)"
+            (onSelectAll)="onSelectAllVerifier($event)" (onDeSelectAll) = "onDeselectAllVerifier($event)">
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="col-md-6">
+          <label class="text-white text-bold ">Approver</label>
+          <ng-multiselect-dropdown [placeholder]="'Select'" [data]="approverList"
+            [(ngModel)]="selectedApproverList" [settings]="multiSelectdropdownSettings">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-4">
+      <label class="text-white text-bold ">Checkpoint</label>
+      <ng-multiselect-dropdown [placeholder]="'Select'" [data]="checkpointList"
+        [(ngModel)]="selectedCheckpointList" [settings]="multiSelectdropdownSettings"
+        (onSelect)="onSelectCheckpoint($event)" (onDeSelect)="onDeselectCheckpoint($event)"
+        (onSelectAll)="onSelectAllCheckpoint($event)" (onDeSelectAll) = "onDeselectAllCheckpoint($event)">
+      </ng-multiselect-dropdown>
+    </div>
+    <div class="col-md-4">
+      <label class="text-white text-bold ">Verifier</label>
+      <ng-multiselect-dropdown [placeholder]="'Select'" [data]="verifierList"
+        [(ngModel)]="selectedVerifierList" [settings]="multiSelectdropdownSettings"
+        (onSelect)="onSelectVerifier($event)" (onDeSelect)="onDeselectVerifier($event)"
+        (onSelectAll)="onSelectAllVerifier($event)" (onDeSelectAll) = "onDeselectAllVerifier($event)"
+        [disabled]="selectedCheckpointList.length == 0">
+      </ng-multiselect-dropdown>
+    </div>
+    <div class="col-md-4">
+      <label class="text-white text-bold ">Approver</label>
+      <ng-multiselect-dropdown [placeholder]="'Select'" [data]="approverList"
+        [(ngModel)]="selectedApproverList" [settings]="multiSelectdropdownSettings"
+        [disabled]="selectedCheckpointList.length == 0 || selectedVerifierList.length == 0 ">
+      </ng-multiselect-dropdown>
+    </div> -->
+  </div>
+  <div class="row">
+    
+
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Location</label>
+      <ng-multiselect-dropdown [placeholder]="'Select'" [data]="locationList"
+        [(ngModel)]="selectedLocationList" [settings]="multiSelectdropdownSettings">
+      </ng-multiselect-dropdown>
+    </div>
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Distance</label>
+      <input type="input" class="form-control input-sm tom-border-radius" [(ngModel)]="distance">
+    </div>
+
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Is Random</label>
+      <ng-multiselect-dropdown [placeholder]="'Select'" [data]="randomList"
+        [(ngModel)]="selectedRandomList" [settings]="singleSelectdropdownSettings">
+      </ng-multiselect-dropdown>
+    </div>
+
+    <div class="col-md-6">
+      <label style="color: transparent;display: block">0</label>
+      <!-- <button class="btn hsil-red text-white text-bold tom-border-radius" (click)="submitChecklistData()">Add new</button> -->
+      <button *ngIf="isNew" class="btn text-white text-bold tom-border-radius" [ngStyle]="{'background-color':button}" (click)="submitChecklistData('new')">Add new</button>
+      <button *ngIf="!isNew" class="btn text-white text-bold tom-border-radius" [ngStyle]="{'background-color':button}" (click)="submitChecklistData('update')">Update</button> &nbsp;
+      <button *ngIf="!isNew" class="btn text-white text-bold tom-border-radius" [ngStyle]="{'background-color':button}" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="inProgress">
+  <div class="col-md-12">
+    <h5 class="text-center text-danger"><i>! Please wait..</i></h5>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+</div>
+
+<div class="row" style="margin:0px 0px 10px;overflow:auto;">
+  <div class="col-md-12" style="padding:0px">
+    <ng2-smart-table [settings]="checklistTableSetting" [source]="resultChecklist" (custom)="onCustomAction($event)"></ng2-smart-table>
+  </div>
+</div>
+
+<div id="previewChecklistModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg" style="max-width:  1320px !important">
+      <div class="modal-content">
+          <div class="modal-header" style="padding: 10px !important;">
+            <h4 class="modal-title">Preview - {{previewMenuId}}</h4>
+            <button type="button" class="btn  btn-sm text-white" [ngStyle]="{'background-color':button}" (click)="closeModal('previewChecklistModal')">Close</button>
+          </div>
+          <div class="modal-body" style="height: 545px;overflow: auto;background: #5396d0;">  
+            <div class="row">
+              <div class="col-md-6">
+                <img src="assets/img/mobile.png" class="moblePic"/>
+                <div class="mobileDiv">
+                  <div class="row previewPage" style="margin: 0px" *ngFor="let pcd of previewCheckpointDetails;let pageIndex = index">
+                    <div class="col-md-12" style="padding:0px">
+                      <label class="text-white text-bold " style="display: block">page : {{pcd.page}}/{{previewCheckpointDetails.length}}</label>
+                      <div class="row" style="margin: 0px">
+                        <div class="col-md-12" style="padding:0px" *ngFor="let cp of pcd.checkpointArr">
+                          <label class="text-white text-bold label-block">{{cp.checkpointId}}. {{cp.description}}</label>
+                          <input type="text" class="form-control input-sm tom-border-radius" *ngIf="cp.typeId == 1 || cp.typeId == 2 || cp.typeId == 3">
+                          <select class="form-control input-sm tom-border-radius" (change)="showDependent($event,cp.checkpointId,cp.logic)" *ngIf="cp.typeId == 4 || cp.typeId == 10 ">
+                            <option value="0">Select</option>
+                            <option value="{{op}}" *ngFor="let op of cp.value?.split(',')" >{{op}}</option>
+                          </select>
+                          <i class="fa fa-camera" aria-hidden="true" *ngIf="cp.typeId == 5 || cp.typeId == 6 || cp.typeId == 11 || cp.typeId == 15"></i>
+                          <label class="text-white text-bold label-block" *ngIf="cp.typeId == 8 || cp.typeId == 9">
+                              <mat-slider #gridsize thumbLabel
+                              [displayWith]="formatLabel"
+                              tickInterval="{{cp.size}}"
+                              step="{{cp.size}}"
+                              min="0"
+                              max="100" ></mat-slider>{{gridsize.value}}
+                          </label>
+                          <input type="date" class="form-control input-sm tom-border-radius" *ngIf="cp.typeId == 7">
+                          <input type="text" class="form-control input-sm tom-border-radius" *ngIf="cp.typeId == 12 || cp.typeId == 13 || cp.typeId == 14 || cp.typeId == 16 || cp.typeId == 17 || cp.typeId == 20 || cp.typeId == 21 || cp.typeId == 22"/>
+                          <video *ngIf="cp.typeId == 18" controls width="100%">
+                              <source src="{{cp.value}}" type="video/mp4">
+                          </video>
+                          <img src="{{cp.value}}" *ngIf="cp.typeId == 19" width="100%"/>
+
+
+                          <div class="col-md-12 dependentQues dependentQues_{{cp.checkpointId}}" style="padding:0px" *ngFor="let lcp of cp.logicCpArr" id="dep_{{cp.checkpointId}}_{{lcp.checkpointId}}">
+                            <label class="text-white text-bold label-block">{{lcp.checkpointId}}. {{lcp.description}}</label>
+                            <input type="text" class="form-control input-sm tom-border-radius" *ngIf="lcp.typeId == 1 || lcp.typeId == 2 || lcp.typeId == 3">
+                            <select class="form-control input-sm tom-border-radius" *ngIf="lcp.typeId == 4 || lcp.typeId == 10 ">
+                              <option value="">Select</option>
+                              <option value="{{lop}}" *ngFor="let lop of lcp.value?.split(',')" >{{lop}}</option>
+                            </select>
+                            <i class="fa fa-camera" aria-hidden="true" *ngIf="lcp.typeId == 5 || lcp.typeId == 6 || lcp.typeId == 11 || lcp.typeId == 15"></i>
+                            <label class="text-white text-bold label-block" *ngIf="lcp.typeId == 8 || lcp.typeId == 9">
+                                <mat-slider #gridsize thumbLabel
+                                [displayWith]="formatLabel"
+                                tickInterval="{{lcp.size}}"
+                                step="{{lcp.size}}"
+                                min="0"
+                                max="100" ></mat-slider>{{gridsize.value}}
+                            </label>
+                            <input type="date" class="form-control input-sm tom-border-radius" *ngIf="lcp.typeId == 7">
+                            <input type="text" class="form-control input-sm tom-border-radius" *ngIf="lcp.typeId == 12 || lcp.typeId == 13 || lcp.typeId == 14 || lcp.typeId == 16 || lcp.typeId == 17 || lcp.typeId == 20 || lcp.typeId == 21 || lcp.typeId == 22"/>
+                            <video *ngIf="lcp.typeId == 18" controls width="100%">
+                                <source src="{{lcp.value}}" type="video/mp4">
+                            </video>
+                            <img src="{{lcp.value}}" *ngIf="lcp.typeId == 19" width="100%"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12" style="padding:0px;margin-top: 5px;">
+                        <button class="btn text-white text-bold tom-border-radius" [ngStyle]="{'background-color':button}" *ngIf="pageIndex != 0" (click)="plusPreDivs(-1)">&#10094; Previous</button>
+                        <button class="btn text-white text-bold tom-border-radius" [ngStyle]="{'background-color':button}" *ngIf="pageIndex + 1 != previewCheckpointDetails.length" (click)="plusPreDivs(1)" style="float: right;">Next &#10095;</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-12">
+                    <label class="text-white text-bold label-block">Note :Remind below points before update checkpoint Sequence.
+                      <ol>
+                        <li>New checkpointId could't be add.</li>
+                        <li>All text are filled.</li>
+                        <li>Can remove any checkpointId from pages. </li>
+                        <li>Can suffle page checkpoint. </li>
+                        <li>Ensure checkpointId not duplicate. </li>
+                      </ol>
+                    </label>
+                  </div>
+                  <div class="col-md-12" *ngFor="let scp of sequenceCheckpointArr;let scpIndex = index">
+                    <label class="text-white text-bold label-block">Page {{scpIndex +1}}</label>
+                    <input type="text" class="form-control input-sm tom-border-radius" id="sequenceTxt_{{scpIndex}}" value="{{scp}}" (input) = "isAnyChanges = true" />
+                  </div>
+                  <div class="col-md-12" style="margin-top: 5px;">
+                    <button class="btn text-white text-bold tom-border-radius" [disabled]="!isAnyChanges" [ngStyle]="{'background-color':button}" (click)="saveChanges()">Save Changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+
+          </div>
+          <!-- <div class="modal-footer">
+            
+          </div> -->
+      </div>
+  </div>
+</div>
+
+<div id="checklistInfoAllModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+        <div class="modal-header" style="padding: 10px !important;">
+          <h4 class="modal-title">! Info</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <h3>Comma separate checkpoint Id</h3>
+              <div>Syntax : chkId1,chkId2, ...</div>
+              <div>Ex : 1,2, ...</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn  btn-sm hsil-red text-white text-bold" (click)="closeModal('checklistInfoAllModal')">Close</button> -->
+          <button type="button" class="btn btn-sm text-white text-bold" [ngStyle]="{'background-color':button}" (click)="closeModal('checklistInfoAllModal')">Close</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div id="checklistInfoGeofenceModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+        <div class="modal-header" style="padding: 10px !important;">
+          <h4 class="modal-title">! Info</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <h3>Comma separate location Id with colon distance</h3>
+              <div>Syntax : lcationId1,locationId2:distance</div>
+              <div>Ex : 1,2:500</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn  btn-sm hsil-red text-white text-bold" (click)="closeModal('checklistInfoGeofenceModal')">Close</button> -->
+          <button type="button" class="btn  btn-sm text-white text-bold" [ngStyle]="{'background-color':button}" (click)="closeModal('checklistInfoGeofenceModal')">Close</button>
+        </div>
+    </div>
+  </div>
+</div>

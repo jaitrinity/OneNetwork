@@ -1,0 +1,49 @@
+<div class="container-fluid" *ngIf="false">
+  <div class="row">
+    <!-- <div class="chart-container col-md-4" style="position: relative;">    
+      <canvas id="lineChartCanvas"></canvas>    
+    </div>
+
+    <div class="chart-container col-md-4" style="position: relative;">    
+      <canvas id="pieChartCanvas"></canvas>    
+    </div> -->
+
+    <!-- <div class="chart-container col-md-6" style="position: relative;padding: 10px">    
+      <canvas id="barChartCanvas"></canvas>    
+    </div> -->
+
+    <div class="chart-container col-md-6" style="position: relative;padding: 10px">
+      <div class="row">
+        <div class="col-md-6">
+          <select class="form-control" [(ngModel)]="searchType" (change)="loadMonthWiseGraph()">
+            <option value="" [disabled]="true">Select</option>
+            <option value="MTD">MTD</option>
+            <option value="QTD">QTD</option>
+            <option value="YTD">YTD</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <select class="form-control" [(ngModel)]="checklistId" (change)="loadMonthWiseGraph()">
+            <option value="" [disabled]="true">Select checklist</option>
+            <option value="{{cl.menuId}}" *ngFor="let cl of checklistData">{{cl.checklistName}}</option>
+            <!-- <option value="QTD">QTD</option>
+            <option value="YTD">YTD</option> -->
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="searchType == '' || checklistId == ''  ">
+        <div class="col-md-12">
+          <h3>Please select two above value</h3>
+        </div>
+      </div> 
+      <div class="row doughnutChartCanvas">
+        <!-- <canvas id="doughnutChartCanvasMTD"></canvas>    
+        <canvas id="doughnutChartCanvasQTD"></canvas>    
+        <canvas id="doughnutChartCanvasYTD"></canvas>  -->
+      </div> 
+
+         
+      <!-- <canvas class="doughnutChartCanvasClass"></canvas>     -->
+    </div>
+  </div>
+</div>

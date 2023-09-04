@@ -1,0 +1,134 @@
+<ngx-spinner
+bdOpacity = 0.9 bdColor = "#333" size = "medium" color = "#fff" type = "ball-scale-multiple"></ngx-spinner>
+      
+<!-- <div class="container-fluid page-header" style="padding: 10px"> -->
+<div class="container-fluid" [ngStyle]="{'background-color':color2}" style="padding: 10px">
+  <!-- <div class="row" >
+    <div class="col-md-4">
+      <a href="javascript:void()" style="font-size: 20px;margin: 5px 0px;color:white;cursor: default;border-bottom: 1px solid #ffbd07">
+        <span>Location</span> 
+      </a>
+    </div>
+  </div> -->
+  <div class="row">
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Name</label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="locationName">
+    </div>
+    <div class="col-md-8">
+      <label class="text-white text-bold ">Geo-coordinate <i class="text-warning">{{geoInfo}}</i></label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="geoCoordinate" placeholder="click on map to get lat-long or enter comma seperate lat-long, Ex : 28.6490059,77.3668853" (keyup.enter)="searchLocation(1)">
+    </div>
+    <!-- <div class="col-md-4">
+      <label class="text-white text-bold ">Search</label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="searchLatLong" placeholder="comma seperate lat-long, Ex : 28.6490059,77.3668853" (keyup.enter)="hello()">
+    </div> -->
+    <!-- <div class="col-md-2">
+      <label style="color: transparent;display: block">0</label>
+      <label class="text-white text-bold goToMap" (click)="goToMap()">  -->
+        <!-- <i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp;
+        <span class="goToMap">Go to map</span> -->
+        <!-- <img src="/assets/img/map_icon.png" style="width:30px;height: 26px;"/> -->
+        <!-- <img src="../OneNetworkPortal/assets/img/map_icon.png" style="width:30px;height: 26px;"/> -->
+      <!-- </label>
+    </div> -->
+    <!-- <div class="col-md-2">
+      <label class="text-white text-bold ">Latitude</label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="latitude">
+    </div>
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Longitude</label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="longitude">
+    </div> -->
+    <div class="col-md-2">
+      <label style="color: transparent;display: block">filter</label>
+      <!-- <button class="btn hsil-red text-white text-bold tom-border-radius" (click)="submitLocData()">Add new</button> -->
+      <button class="btn text-white text-bold tom-border-radius" [ngStyle]="{'background-color':button}" (click)="submitLocData()">Add new</button>
+    </div>
+  </div>
+  
+</div> 
+
+<div class="row" *ngIf="isShowMap">
+  <div class="col-md-12">
+  <agm-map [zoom]="zoom" [latitude]="lat" [longitude]="lng" (mapClick)="onChooseLocation($event,1)">
+    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+  </agm-map>
+  </div>
+</div>
+<!-- <ng2-smart-table [settings]="locationTableSettings" [source]="locationList"></ng2-smart-table> -->
+<div class="row" style="margin-bottom: 10px;overflow: auto;">
+  <div class="col-md-12">
+    <ng2-smart-table [settings]="locationTableSettings" [source]="locationList" (custom)="onCustomAction($event)"></ng2-smart-table>
+  </div>
+</div>
+
+<div id="locationInfoModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+        <div class="modal-header" style="padding: 10px !important;">
+          <h4 class="modal-title">! Info</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <h3>Comma separate Latitude and Longitude</h3>
+              <div>Syntax : latitude,longitude</div>
+              <div>Ex : 22.1234567,87.1234567</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn  btn-sm hsil-red text-white text-bold" (click)="closeModal()">Close</button> -->
+          <button type="button" class="btn  btn-sm text-white text-bold" [ngStyle]="{'background-color':button}" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div id="editLocationModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg" style="max-width:  1320px !important">
+      <div class="modal-content">
+          <div class="modal-header" style="padding: 10px !important;">
+            <h4 class="modal-title">Edit : {{editableLocationId}}</h4>
+            <!-- <button type="button" class="btn  btn-sm hsil-red text-white" (click)="closeEditModal()">Close</button> -->
+            <button type="button" class="btn  btn-sm text-white" [ngStyle]="{'background-color':button}" (click)="closeEditModal()">Close</button>
+          </div>
+          <div class="modal-body" style="height: 470px;overflow: auto;background: #5396d0;">
+            <div class="row">
+              <div class="col-md-2">
+                <label class="text-white text-bold ">Name</label>
+                <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="editableLocationName" (input)="isDoAnyChange = false">
+              </div>
+              <div class="col-md-8">
+                <label class="text-white text-bold ">Geo-coordinate <i class="text-warning">{{geoInfo}}</i></label>
+                <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="editableGeoCoordinate" placeholder="click on map to get lat-long or enter comma seperate lat-long, Ex : 28.6490059,77.3668853" (keyup.enter)="searchLocation(2)" (input)="isDoAnyChange = false">
+              </div>
+              <!-- <div class="col-md-2">
+                <label style="color: transparent;display: block">0</label>
+                <label class="text-white text-bold" (click)="goToMap()"> 
+                  <i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp;
+                  <span class="goToMap">Go to map</span>
+                </label>
+              </div> -->
+          
+              <div class="col-md-2">
+                <label style="color: transparent;display: block">filter</label>
+                <!-- <button class="btn hsil-red text-white text-bold tom-border-radius" [(disabled)] = "isDoAnyChange" (click)="editLocationData()">Edit</button> -->
+                <button class="btn text-white text-bold tom-border-radius" [ngStyle]="{'background-color':button}" [(disabled)] = "isDoAnyChange" (click)="editLocationData()">Edit</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12" style="margin-top:10px">
+                <agm-map [zoom]="zoom" [latitude]="editLat" [longitude]="editLng" (mapClick)="onChooseLocation($event,2);isDoAnyChange = false" class="editMap">
+                    <agm-marker [latitude]="editLat" [longitude]="editLng"></agm-marker>
+                </agm-map>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <!-- <button type="button" class="btn  btn-sm hsil-red text-white" (click)="closeModal()">Close</button> -->
+          </div>
+      </div>
+  </div>
+</div>

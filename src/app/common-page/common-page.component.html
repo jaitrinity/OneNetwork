@@ -1,0 +1,330 @@
+<!-- <p>
+  common-page works! {{href}}
+</p> -->
+
+<ngx-spinner
+bdOpacity = 0.9
+      bdColor = "#333"
+      size = "medium"
+      color = "#fff"
+      type = "ball-scale-multiple"></ngx-spinner>
+
+     
+
+<!-- <div class="container-fluid page-header" style="padding: 10px"> -->
+<div class="container-fluid" [ngStyle]="{'background-color':color2}" style="padding: 10px">
+  <!-- <div class="row" >
+    <div class="col-md-4">
+      <a href="javascript:void()" (click)="reloadPage()" style="font-size: 20px;margin-top: 5px;color:#db1d12">
+        <span class="fa fa-refresh"></span> {{categoryName}}
+      </a>
+      <a href="javascript:void()" style="font-size: 20px;margin: 5px 0px;color:white;cursor: default;border-bottom: 1px solid #ffbd07">
+        <span>{{categoryName}}</span> 
+      </a>
+    </div>
+  </div>  -->
+  
+  <div class="row">
+    <!-- <div class="col-md-2">
+      <label>Transaction Id</label>
+      <input type="text" class="form-control" [(ngModel)]="filterTransactionId">
+    </div>
+    <div class="col-md-2">
+      <label>Employee Id</label>
+      <input type="text" class="form-control" [(ngModel)]="filterEmployeeId">
+    </div> -->
+    <!-- <div class="col-md-2">
+      <label>Category</label>
+      <ng-multiselect-dropdown [placeholder]="'Select'" [data]="categoryList" 
+        [(ngModel)]="selectedCategoryList" [settings]="categoryDropdownSettings" 
+        (onSelect)="onSelectOrDeselectCategory($event)" (onDeSelect)="onSelectOrDeselectCategory($event)" 
+        (onSelectAll)="onSelectAllOrDeselectAllCategory($event)"  (onDeSelectAll)="onSelectAllOrDeselectAllCategory($event)">
+      </ng-multiselect-dropdown>
+    </div> -->
+    <div class="col-md-3">
+      <label class="text-white text-bold ">Sub Category</label>
+      <ng-multiselect-dropdown [placeholder]="'Select'" [data]="subcategoryList" [disabled] = "level == 1"
+        [(ngModel)]="selectedSubcategoryList" [settings]="singleSelectdropdownSettings"
+        (onSelect)="onSelectOrDeselectSubcategory($event)" (onDeSelect)="onSelectOrDeselectSubcategory($event)"
+        (onSelectAll)="onSelectAllOrDeselectAllSubcategory($event)" (onDeSelectAll)="onSelectAllOrDeselectAllSubcategory($event)">
+      </ng-multiselect-dropdown>
+    </div>
+    <div class="col-md-3">
+        <!-- (onSelect)="onSelectOrDeselectCaption($event)" (onDeSelect)="onSelectOrDeselectCaption($event)"
+        (onSelectAll)="onSelectAllOrDeselectAllCaption($event)" (onDeSelectAll)="onSelectAllOrDeselectAllCaption($event)" -->
+      <label class="text-white text-bold ">Caption</label>
+      <ng-multiselect-dropdown [placeholder]="'Select'" [data]="captionList" [disabled] = "level == 1 || level == 2"
+        [(ngModel)]="selectedCaptionList" [settings]="singleSelectdropdownSettings"
+        >
+      </ng-multiselect-dropdown>
+    </div>
+
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Start Date</label>
+      <input type="date" class="form-control input-sm tom-border-radius" [(ngModel)]="filterStartDate">
+    </div>
+    <div class="col-md-2">
+      <label class="text-white text-bold">End Date</label>
+      <input type="date" class="form-control input-sm tom-border-radius"  [(ngModel)]="filterEndDate">
+    </div>
+    <div class="col-md-2">
+      <label style="color: transparent;display: block">filter</label>
+      <!-- <button class="btn hsil-red text-white text-bold tom-border-radius" (click)="getMenuTrasactions()">Apply Filter</button> -->
+      <button class="btn text-white text-bold tom-border-radius" [ngStyle]="{'background-color':button}" (click)="getMenuTrasactions()">Apply Filter</button>
+      &nbsp;
+    <!-- </div>
+    <div class="col-md-2">
+      <label style="color: transparent;display: block">export</label> -->
+      <!-- <button class="btn hsil-red text-white text-bold tom-border-radius"> <i class="fa fa-download"></i> Export </button> -->
+    </div>
+  </div>
+</div>
+
+<div class="row" style="margin-bottom: 10px">
+  <div class="col-md-12" style="overflow: auto">
+    <ng2-smart-table class="hdr" [settings]="transactionHdrSettings" [source]="transactionHdrList" (delete)="viewDetails($event)"></ng2-smart-table>
+  </div>
+</div>
+
+<div id="viewDetailsModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg" style="max-width:  1320px !important">
+      <div class="modal-content">
+          <div class="modal-header" style="padding: 10px !important;">
+            <h4 class="modal-title">View : {{transactionId}}</h4>
+            <!-- <button type="button" class="btn  btn-sm hsil-red text-white" (click)="closeModal()">Close</button> -->
+            <button type="button" class="btn  btn-sm text-white" [ngStyle]="{'background-color':button}" (click)="closeModal()">Close</button>
+          </div>
+          <div class="modal-body" style="height: 540px;overflow: auto;">
+            <!-- <div class="row" *ngIf="!isApprovalRequired">
+              <div class="col-md-12">
+                <h4 style="color:red"> ! You are not able to approve this transaction due to primary or secondary approval role</h4>
+              </div>
+            </div> -->
+            <div class="row">
+              <div class="col-md-12">
+                <!-- <ng2-smart-table [settings]="transactionDetSettings" [source]="transactionDetList"></ng2-smart-table> -->
+              
+                <table class="table table-bordered myTable">
+                  <thead>
+                    <tr>
+                      <th style="width: 65px;">SR No</th> <th style="width: 500px;">Checkpoint</th> <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let td of transactionDetList">
+                      <td>{{td.srNumber}}</td>
+                      <td>{{td.checkpoint}}</td>
+                      <td *ngIf="td.typeId != 5 && td.typeId != 6 && td.typeId != 12">{{td.value}}</td>
+                      <td *ngIf="td.typeId == 5 || td.typeId == 6">
+                        <!-- <img *ngFor="let v of td.value?.split(',')" src ="{{v}}"/> -->
+                        <span *ngFor="let v of td.value?.split(',')" (click)="openMedia(v);">
+                          <i  class="fa fa-picture-o" aria-hidden="true"></i> &nbsp;
+                        </span> 
+                      </td>
+                      <td *ngIf="td.typeId == 12">
+                        <!-- <img *ngFor="let v of td.value?.split(',')" src ="{{v}}"/> -->
+                        <span *ngFor="let v of td.value?.split(',')" (click)="openMedia(v)">
+                          <i class="fa fa-video-camera" aria-hidden="true"></i> &nbsp;
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="verifyDetList.length != 0 ">
+              <div class="col-md-12">
+                <label>Verified checkpoint : Verified by {{viewVerifiedBy}} on {{viewVerifiedDate}}.</label>
+              </div>
+              <div class="col-md-12">
+                <!-- <ng2-smart-table [settings]="transactionDetSettings" [source]="verifyDetList"></ng2-smart-table> -->
+                <table class="table table-bordered myTable">
+                  <thead>
+                    <tr>
+                      <th style="width: 65px;">SR No</th> <th style="width: 500px;">Checkpoint</th> <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let td of verifyDetList">
+                      <td>{{td.srNumber}}</td>
+                      <td>{{td.checkpoint}}</td>
+                      <td *ngIf="td.typeId != 5 && td.typeId != 6 && td.typeId != 12">{{td.value}}</td>
+                      <td *ngIf="td.typeId == 5 || td.typeId == 6">
+                        <!-- <img *ngFor="let v of td.value?.split(',')" src ="{{v}}"/> -->
+                        <span *ngFor="let v of td.value?.split(',')" (click)="openMedia(v);">
+                          <i  class="fa fa-picture-o" aria-hidden="true"></i> &nbsp;
+                        </span> 
+                      </td>
+                      <td *ngIf="td.typeId == 12">
+                        <!-- <img *ngFor="let v of td.value?.split(',')" src ="{{v}}"/> -->
+                        <span *ngFor="let v of td.value?.split(',')" (click)="openMedia(v)">
+                          <i class="fa fa-video-camera" aria-hidden="true"></i> &nbsp;
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="approveDetList.length != 0">
+              <div class="col-md-12">
+                <label>Approved checkpoint : Approved by {{viewApprovedBy}} on {{viewApprovedDate}}.</label>
+              </div>
+              <div class="col-md-12">
+                <!-- <ng2-smart-table [settings]="transactionDetSettings" [source]="approveDetList"></ng2-smart-table> -->
+                <table class="table table-bordered myTable">
+                  <thead>
+                    <tr>
+                      <th style="width: 65px;">SR No</th> <th style="width: 500px;">Checkpoint</th> <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let td of approveDetList">
+                      <td>{{td.srNumber}}</td>
+                      <td>{{td.checkpoint}}</td>
+                      <td *ngIf="td.typeId != 5 && td.typeId != 6 && td.typeId != 12">{{td.value}}</td>
+                      <td *ngIf="td.typeId == 5 || td.typeId == 6">
+                        <!-- <img *ngFor="let v of td.value?.split(',')" src ="{{v}}"/> -->
+                        <span *ngFor="let v of td.value?.split(',')" (click)="openMedia(v);">
+                          <i  class="fa fa-picture-o" aria-hidden="true"></i> &nbsp;
+                        </span> 
+                      </td>
+                      <td *ngIf="td.typeId == 12">
+                        <!-- <img *ngFor="let v of td.value?.split(',')" src ="{{v}}"/> -->
+                        <span *ngFor="let v of td.value?.split(',')" (click)="openMedia(v)">
+                          <i class="fa fa-video-camera" aria-hidden="true"></i> &nbsp;
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="myRoleForTask == 'Approver' && transactionStatus == 'Created' ">
+              <div class="col-md-12" style="margin: 10px 0px">
+                <h4 class="text-danger">! This task is pending for verify.</h4>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="myRoleForTask == 'Verifier' && transactionStatus == 'Verified' ">
+              <div class="col-md-12" style="margin: 10px 0px">
+                <h4 class="text-danger">! This task is pending for approve.</h4>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="isApprovalRequired || isVerifyRequired ">
+              <div class="col-md-12">
+                <table class="table table-bordered myTable">
+                  <thead>
+                    <tr>
+                      <th style="width: 65px;">Chp Id</th>
+                      <th style="width: 500px;">Checkpoint</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let actDet of actionCheckpointList">
+                      <td>
+                        {{actDet.checkpointId}}
+                      </td>
+                      <td>
+                        {{actDet.checkpoint}}
+                      </td>
+                      <td>
+                        <input type="text" class="form-control" id="action-{{actDet.checkpointId}}" (input)="isDoAnyChange = true"
+                        *ngIf="actDet.typeId == 1 || actDet.typeId == 2 || actDet.typeId == 3 "/>
+
+                        <!-- <input type="hidden" id="hidden-{{actDet.checkpointId}}" 
+                        *ngIf="actDet.typeId == 5 || actDet.typeId == 6 || actDet.typeId == 12 "/>
+                        
+                        <input type="file" (change)="changeListener($event,actDet.checkpointId)" accept=".jpg,.png,.jpeg" class="form-control"  
+                        *ngIf="actDet.typeId == 5 || actDet.typeId == 6 "/>
+
+                        <input type="file" (change)="changeListener($event,actDet.checkpointId)" accept=".mp4" class="form-control"  
+                        *ngIf="actDet.typeId == 12 "/> -->
+
+                        <!-- checkbox -->
+                        <div *ngIf="actDet.typeId == 4 && actDet.size == 0 ">
+                          <label *ngFor="let opList of actDet.value?.split(',')" (click)="showDependent($event,actDet.checkpointId,actDet.logic,actDet.typeId)">
+                            <input type="checkbox" value="{{opList}}" class="action-{{actDet.checkpointId}}" (input)="isDoAnyChange = true"/> {{opList}}
+                          </label>
+                        </div>
+
+                        <!-- radio -->
+                        <div *ngIf="actDet.typeId == 4 && actDet.size == 1 ">
+                          <label *ngFor="let opList of actDet.value?.split(',')" (click)="showDependent($event,actDet.checkpointId,actDet.logic,actDet.typeId)">
+                            <input type="radio" name="dep" value="{{opList}}" class="action-{{actDet.checkpointId}}" (input)="isDoAnyChange = true"/> {{opList}}
+                          </label>
+                        </div>
+
+                        <input type="date" class="form-control" id="action-{{actDet.checkpointId}}" (input)="isDoAnyChange = true"
+                        *ngIf="actDet.typeId == 7"/>
+
+                        <div *ngIf="actDet.typeId == 10 ">
+                          <select class="form-control" id="action-{{actDet.checkpointId}}" (change)="showDependent($event,actDet.checkpointId,actDet.logic,actDet.typeId)" (input)="isDoAnyChange = true">
+                            <option value="">Select</option>
+                            <option *ngFor="let opList of actDet.value?.split(',')" value="{{opList}}">{{opList}}</option>
+                          </select>
+                        </div>
+
+                        <div class="col-md-12 dependentQues dependentQues_{{actDet.checkpointId}}" style="padding:0px" *ngFor="let lcp of actDet.logicCpArr" id="dep_{{actDet.checkpointId}}_{{lcp.checkpointId}}" 
+                        attr.typeId="{{lcp.typeId}}" attr.checkpointId="{{lcp.checkpointId}}" attr.dependChpId="{{actDet.checkpointId}}">
+                          <label class="text-bold label-block">{{lcp.checkpointId}}. {{lcp.description}}</label>
+                          <input type="text" class="form-control input-sm tom-border-radius" *ngIf="lcp.typeId == 1 || lcp.typeId == 2 || lcp.typeId == 3">
+                          <select class="form-control input-sm tom-border-radius" *ngIf="lcp.typeId == 4 || lcp.typeId == 10 ">
+                            <option value="">Select</option>
+                            <option value="{{lop}}" *ngFor="let lop of lcp.value?.split(',')" >{{lop}}</option>
+                          </select>
+                          <i class="fa fa-camera" aria-hidden="true" *ngIf="lcp.typeId == 5 || lcp.typeId == 6 || lcp.typeId == 11 || lcp.typeId == 15"></i>
+                          <label class="text-white text-bold label-block" *ngIf="lcp.typeId == 8 || lcp.typeId == 9">
+                              <mat-slider #gridsize thumbLabel
+                              [displayWith]="formatLabel"
+                              tickInterval="{{lcp.size}}"
+                              step="{{lcp.size}}"
+                              min="0"
+                              max="100" ></mat-slider>{{gridsize.value}}
+                          </label>
+                          <input type="date" class="form-control input-sm tom-border-radius" *ngIf="lcp.typeId == 7">
+                          <input type="text" class="form-control input-sm tom-border-radius" *ngIf="lcp.typeId == 12 || lcp.typeId == 13 || lcp.typeId == 14 || lcp.typeId == 16 || lcp.typeId == 17 || lcp.typeId == 20 || lcp.typeId == 21 || lcp.typeId == 22"/>
+                          <video *ngIf="lcp.typeId == 18" controls width="100%">
+                              <source src="{{lcp.value}}" type="video/mp4">
+                          </video>
+                          <img src="{{lcp.value}}" *ngIf="lcp.typeId == 19" width="100%"/>
+                        </div>
+
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <!-- <div class="row" *ngIf="isApprovalRequired || isVerifyRequired">
+              <div class="col-md-12">
+                <label>Remark</label>
+                <textarea class="form-control" [(ngModel)] = "remark"></textarea>
+              </div>
+            </div> -->
+            <div class="row" *ngIf="transactionStatus == 'Created' && isVerifyRequired">
+              <div class="col-md-12">
+                <!-- <button class="btn hsil-red text-white" (click)="changeTransactionStatus('Verified')">Verify</button> -->
+                <button class="btn text-white" [ngStyle]="{'background-color':button}" (click)="changeTransactionStatus('Verified')">Verify</button>
+              </div>
+            </div>
+            <div class="row" *ngIf="transactionStatus == 'Verified' && isApprovalRequired">
+              <div class="col-md-12">
+                <!-- <button class="btn hsil-red text-white" (click)="changeTransactionStatus('Approved')">Approve</button> -->
+                <button class="btn text-white" [ngStyle]="{'background-color':button}" (click)="changeTransactionStatus('Approved')">Approve</button>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="modal-footer">
+            <button type="button" class="btn  btn-sm hsil-red text-white" data-dismiss="modal">Close</button>
+            <button type="button" class="btn  btn-sm hsil-red text-white" (click)="closeModal()">Close</button>
+          </div> -->
+      </div>
+  </div>
+</div>

@@ -1,0 +1,156 @@
+<ngx-spinner
+bdOpacity = 0.9 bdColor = "#333" size = "medium" color = "#fff" type = "ball-scale-multiple"></ngx-spinner>
+
+<!-- <div class="container-fluid page-header" style="padding: 10px"> -->
+<div class="container-fluid" [ngStyle]="{'background-color':color2}" style="padding: 10px">
+  <!-- <div class="row" >
+    <div class="col-md-4">
+      <a href="javascript:void()" style="font-size: 20px;margin: 5px 0px;color:white;cursor: default;border-bottom: 1px solid #ffbd07">
+        <span>Employee</span> 
+      </a>
+    </div>
+  </div> -->
+  <div class="row" >
+    <div class="col-md-12">
+      <label class="text-white text-bold ">! All * fields are Mandatory.</label>
+    </div>
+  </div>
+  <div class="row">
+    <!-- <div class="col-md-2">
+      <label class="text-white text-bold ">Employee Id</label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="employeeId">
+    </div> -->
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Employee Name <span>*</span> </label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="employeeName">
+    </div>
+    <div class="col-md-2">
+        <!-- (onSelect)="onSelectOrDeselectRole($event)" (onDeSelect)="onSelectOrDeselectRole($event)"
+        (onSelectAll)="onSelectAllOrDeselectAllRole($event)" (onDeSelectAll)="onSelectAllOrDeselectAllRole($event)" -->
+      <label class="text-white text-bold ">Role <span>*</span> </label>
+      <ng-multiselect-dropdown [placeholder]="'Select'" [data]="roleList"
+        [(ngModel)]="selectedRoleList" [settings]="singleSelectdropdownSettings"
+        >
+      </ng-multiselect-dropdown>
+    </div>
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Mobile <span>*</span> </label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="mobile" OnlyNumber="true" LengthValidater="10">
+    </div>
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Secondary Mobile</label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="secondaryMobile" OnlyNumber="true" LengthValidater="10">
+    </div>
+    <div class="col-md-2">
+      <label class="text-white text-bold ">Area</label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="area">
+    </div>
+  
+    <div class="col-md-2">
+      <label class="text-white text-bold ">City</label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="city">
+    </div>
+    
+    <div class="col-md-3">
+        <!-- (onSelect)="onSelectOrDeselectRmId($event)" (onDeSelect)="onSelectAllOrDeselectAllRmId($event)"
+        (onSelectAll)="onSelectAllOrDeselectAllRmId($event)" (onDeSelectAll)="onSelectAllOrDeselectAllRmId($event)" -->
+      <label class="text-white text-bold ">RM employee</label>
+      <ng-multiselect-dropdown [placeholder]="'Select'" [data]="rmIdList"
+        [(ngModel)]="selectedRmIdList" [settings]="singleSelectdropdownSettings"
+        >
+      </ng-multiselect-dropdown>
+    </div>
+    <div class="col-md-2">
+      <label class="text-white text-bold ">State</label>
+      <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="state">
+    </div>
+    <div class="col-md-2">
+      <label style="color: transparent;display: block">0</label>
+      <label class="text-white text-bold "><input type="checkbox" [(ngModel)]="isFieldUser"/> Is Field User</label>
+    </div>
+
+    <div class="col-md-3">
+      <label style="color: transparent;display: block">filter</label>
+      <!-- <button class="btn hsil-red text-white text-bold tom-border-radius" (click)="submitEmployeeData()">Add new</button> -->
+      <button class="btn text-white text-bold tom-border-radius" [ngStyle]="{'background-color':button}" (click)="submitEmployeeData()">Add new</button>
+    </div>
+  </div>
+</div> 
+
+<div class="row" style="margin:0px 0px 10px;overflow:auto;">
+  <div class="col-md-12" style="padding:0px">
+    <!-- <ng2-smart-table [settings]="employeeTableSettings" [source]="employeeList" (edit)="actionOnEmployee($event,1)" (delete)="actionOnEmployee($event,0)"></ng2-smart-table> -->
+    <ng2-smart-table [settings]="employeeTableSettings" [source]="employeeList" (custom)="onCustomAction($event)"></ng2-smart-table>
+  </div>
+</div>
+
+<div id="editEmployeeModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg" style="max-width:  1320px !important">
+      <div class="modal-content">
+          <div class="modal-header" style="padding: 10px !important;">
+            <h4 class="modal-title">Edit : {{editableEmployeeId}}</h4>
+            <!-- <button type="button" class="btn  btn-sm hsil-red text-white" (click)="closeModal()">Close</button> -->
+            <button type="button" class="btn  btn-sm text-white" [ngStyle]="{'background-color':button}" (click)="closeModal()">Close</button>
+          </div>
+          <div class="modal-body" style="height: 470px;overflow: auto;background: #5396d0;">
+            <div class="row">
+              <div class="col-md-2">
+                <label class="text-white text-bold ">Employee Name</label>
+                <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="editEmployeeName" (input)="isDoAnyChange = false">
+              </div>
+              <div class="col-md-2">
+                <label class="text-white text-bold ">Role</label>
+                <ng-multiselect-dropdown [placeholder]="'Select'" [data]="roleList"
+                  [(ngModel)]="editSelectedRoleList" [settings]="singleSelectdropdownSettings"
+                  (onSelect)="isDoAnyChange = false" (onSelectAll)="isDoAnyChange = false"
+                  >
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="col-md-2">
+                <label class="text-white text-bold ">Mobile</label>
+                <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="editMobile" (input)="isDoAnyChange = false" OnlyNumber="true" LengthValidater="10">
+              </div>
+              <div class="col-md-2">
+                <label class="text-white text-bold ">Secondary Mobile</label>
+                <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="editSecondaryMobile" (input)="isDoAnyChange = false" OnlyNumber="true" LengthValidater="10">
+              </div>
+              <div class="col-md-2">
+                <label class="text-white text-bold ">Area</label>
+                <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="editArea" (input)="isDoAnyChange = false">
+              </div>
+              <div class="col-md-2">
+                <label class="text-white text-bold ">City</label>
+                <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="editCity" (input)="isDoAnyChange = false">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2">
+                <label class="text-white text-bold ">RM employee</label>
+                <ng-multiselect-dropdown [placeholder]="'Select'" [data]="rmIdList" (input)="isDoAnyChange = false"
+                  [(ngModel)]="editSelectedRmIdList" [settings]="singleSelectdropdownSettings"
+                  (onSelect)="isDoAnyChange = false" (onSelectAll)="isDoAnyChange = false"
+                  >
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="col-md-2">
+                <label class="text-white text-bold ">State</label>
+                <input type="text" class="form-control input-sm tom-border-radius" [(ngModel)]="editState" (input)="isDoAnyChange = false">
+              </div>
+              <div class="col-md-2">
+                <label style="color: transparent;display: block">0</label>
+                <label class="text-white text-bold "><input type="checkbox" [(ngModel)]="editIsFieldUser" (input)="isDoAnyChange = false"/> Is Field User</label>
+              </div>
+          
+              <div class="col-md-4">
+                <label style="color: transparent;display: block">filter</label>
+                <!-- <button class="btn hsil-red text-white text-bold tom-border-radius" [(disabled)] = "isDoAnyChange" (click)="editEmployeeData()">Edit</button> -->
+                <button class="btn text-white text-bold tom-border-radius" [ngStyle]="{'background-color':button}" [(disabled)] = "isDoAnyChange" (click)="editEmployeeData()">Edit</button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <!-- <button type="button" class="btn  btn-sm hsil-red text-white" (click)="closeModal()">Close</button> -->
+          </div>
+      </div>
+  </div>
+</div>
